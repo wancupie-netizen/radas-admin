@@ -70,7 +70,7 @@ function load(file, mocks = {}) {
   const page = load(path.resolve('app/admin/traffic/page.tsx'), {
     '../../chatgpt-auth': { requireChatGPTUser: async () => { if (!ownerAllowed) throw Error('LOGIN_REQUIRED'); } },
     '../../../lib/analytics': { AnalyticsError: api.AnalyticsError, getTraffic: async () => { reportReads++; return a; } },
-    '../login/actions': { logout: async () => {} }, './traffic.css': {},
+    '../login/actions': { logout: async () => {} }, '../admin-header': { default: () => null }, './traffic.css': {},
   }).default;
   await assert.rejects(page({ searchParams: Promise.resolve({ days: '7' }) }), /LOGIN_REQUIRED/);
   assert.equal(reportReads, 0, 'unauthorized users must not read GA reports');

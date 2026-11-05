@@ -1,0 +1,113 @@
+.radas-admin-header {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 28px;
+  border-bottom: 1px solid #d7e2da;
+  background: #fff;
+  color: #123f32;
+  font: 14px/1.5 Arial, sans-serif;
+}
+.radas-admin-header * {
+  box-sizing: border-box;
+}
+.radas-admin-brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  justify-self: start;
+  color: #123f32;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.radas-admin-brand span {
+  color: #62786b;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+.radas-admin-nav {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid #dfe7e1;
+  border-radius: 10px;
+  background: #f2f6f3;
+}
+.radas-admin-nav a {
+  padding: 9px 16px;
+  border-radius: 7px;
+  color: #395648;
+  text-decoration: none;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.radas-admin-nav a:hover {
+  background: #e4ede7;
+}
+.radas-admin-nav a[aria-current="page"] {
+  background: #123f32;
+  color: #fff;
+}
+.radas-admin-logout {
+  margin: 0;
+  justify-self: end;
+}
+.radas-admin-logout button {
+  border: 1px solid #ccd9d0;
+  border-radius: 7px;
+  padding: 9px 14px;
+  background: #fff;
+  color: #174b34;
+  font: inherit;
+  cursor: pointer;
+}
+.radas-admin-logout button:hover {
+  background: #f0f5f1;
+}
+.radas-admin-header a:focus-visible,
+.radas-admin-header button:focus-visible {
+  outline: 3px solid #88b25e;
+  outline-offset: 3px;
+}
+.pm .pm-toolbar {
+  position: static;
+  background: #f1f4f1;
+  color: #1d362b;
+  border-bottom: 1px solid #d7e2da;
+}
+.pm .pm-toolbar strong {
+  font-size: 20px;
+  letter-spacing: 0;
+}
+.pm .pm-toolbar small {
+  color: #52685b;
+  opacity: 1;
+}
+@media (max-width: 640px) {
+  .radas-admin-header {
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+    padding: 14px 18px;
+  }
+  .radas-admin-brand {
+    font-size: 22px;
+  }
+  .radas-admin-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .radas-admin-nav a {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+  }
+  .radas-admin-logout {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}

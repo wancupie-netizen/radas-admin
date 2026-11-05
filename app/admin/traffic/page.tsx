@@ -1,7 +1,7 @@
 import { requireChatGPTUser } from '../../chatgpt-auth';
 import { AnalyticsError, getTraffic } from '../../../lib/analytics';
 import { trafficDays } from '../../../lib/analytics-query';
-import { logout } from '../login/actions';
+import AdminHeader from '../admin-header';
 import './traffic.css';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -19,9 +19,8 @@ export default async function TrafficPage({ searchParams }: { searchParams: Prom
   let stats: Awaited<ReturnType<typeof getTraffic>> | undefined, error = '';
   try { stats = await getTraffic(days); } catch (e) { error = errors[e instanceof AnalyticsError ? e.code : 'unavailable']; }
   const max = Math.max(1, ...stats?.daily.map(d => d.views) || []);
-  return <main className="traffic">
-    <header className="traffic-header"><div><p>RADAS / ANALYTICS</p><h1>Statistik Trafik</h1></div><form action={logout}><button>Log Keluar</button></form></header>
-    <nav className="traffic-nav" aria-label="Admin"><a href="/admin">Urus Produk</a><a href="/admin/traffic" aria-current="page">Statistik Trafik</a></nav>
+  return <><AdminHeader active="traffic" /><main className="traffic">
+    <header className="traffic-header"><h1>Statistik Trafik</h1></header>
     <section className="traffic-heading"><div><h2>Prestasi halaman produk</h2><p>GA4 · G-QQPTKC0RM9 · radas.my/p/…</p></div><nav aria-label="Tempoh statistik">{([1, 7, 30] as const).map(value => <a key={value} href={`/admin/traffic?days=${value}`} aria-current={days === value ? 'page' : undefined}>{value === 1 ? 'Hari ini' : `${value} hari`}</a>)}</nav></section>
     {error && <section className="traffic-card" role="status"><h2>Statistik belum tersedia</h2><p>{error}</p><p>Tiada angka dipaparkan sehingga data sebenar GA4 dapat dibaca.</p><a href={`/admin/traffic?days=${days}`}>Cuba semula</a></section>}
     {stats && <>
@@ -31,5 +30,5 @@ export default async function TrafficPage({ searchParams }: { searchParams: Prom
       <div className="traffic-grid"><section className="traffic-card"><h2>Trafik mengikut produk</h2><p>Sehingga 100 halaman teratas</p><div className="traffic-scroll"><table><caption>Halaman produk</caption><thead><tr><th>Halaman</th><th>Pelawat</th><th>Paparan</th></tr></thead><tbody>{stats.pages.map(row => <tr key={row.label}><td>{row.label}</td><td>{number(row.users)}</td><td>{number(row.views)}</td></tr>)}</tbody></table>{stats.pages.length === 0 && <p>Belum ada data halaman.</p>}</div></section><section className="traffic-card"><h2>Sumber trafik</h2><p>Sehingga 20 sumber / medium teratas</p><div className="traffic-scroll"><table><caption>Sumber / medium sesi bagi paparan produk</caption><thead><tr><th>Sumber / medium</th><th>Pelawat</th><th>Paparan</th></tr></thead><tbody>{stats.sources.map(row => <tr key={row.label}><td>{row.label}</td><td>{number(row.users)}</td><td>{number(row.views)}</td></tr>)}</tbody></table>{stats.sources.length === 0 && <p>Belum ada data sumber.</p>}</div></section></div>
       <footer className="traffic-note"><p>Dibaca pada {new Date(stats.fetchedAt).toLocaleString('en-MY', { timeZone: stats.timeZone })} · Zon waktu property: {stats.timeZone} · Cache sehingga 5 minit.</p><p>Tempoh termasuk hari ini. Data GA4 bukan masa nyata. Pelawat yang sama boleh muncul pada beberapa hari, produk atau sumber; jumlah pelawat keseluruhan dikira berasingan. Trafik admin dan domain preview tidak termasuk.</p>{stats.limited && <p>GA4 melaporkan threshold, sampling atau pengagregatan pada sebahagian data ini.</p>}</footer>
     </>}
-  </main>;
+  </main></>;
 }
