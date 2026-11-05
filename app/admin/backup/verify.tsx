@@ -7,7 +7,7 @@ export default function BackupCheck() {
   async function verify(file?: File) {
     if (!file) return;
     setBusy(true);
-    setMessage('Menyemak backupâ€¦');
+    setMessage('Menyemak backup…');
     const reader = file.stream().pipeThrough(new TextDecoderStream()).getReader();
     const manifest: { key: string; size: number; sha256: string }[] = [];
     let expected: number | undefined;

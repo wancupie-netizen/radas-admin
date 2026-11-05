@@ -1,10 +1,11 @@
+import type { StorageBucket } from './storage';
 export const backupFormat = 'radas-r2-backup-v1';
 const encoder = new TextEncoder();
 export async function sha256(bytes: Uint8Array): Promise<string> {
   const digest = await crypto.subtle.digest('SHA-256', new Uint8Array(bytes));
   return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
 }
-export async function inventory(storage: R2Bucket) {
+export async function inventory(storage: StorageBucket) {
   const objects: { key: string; etag: string; size: number; version: string }[] = [];
   let cursor: string | undefined;
   do {
@@ -17,7 +18,7 @@ export async function inventory(storage: R2Bucket) {
   } while (cursor);
   return objects.sort((a, b) => a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
 }
-export async function* backupRecords(storage: R2Bucket, objects: Awaited<ReturnType<typeof inventory>>) {
+export async function* backupRecords(storage: StorageBucket, objects: Awaited<ReturnType<typeof inventory>>) {
   yield { kind: 'header', format: backupFormat, startedAt: new Date().toISOString(), objects: objects.length };
   const manifest: { key: string; size: number; sha256: string }[] = [];
   let bytes = 0;
